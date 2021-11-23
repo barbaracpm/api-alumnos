@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,13 +33,13 @@ import com.springboot.apirest.alumnos.models.entity.Alumno;
 import com.springboot.apirest.alumnos.services.AlumnoService;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,RequestMethod.DELETE})
 public class AlumnoRestController implements ControllerDoc {
 
 	@Autowired
 	private AlumnoService alumnoService;
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@GetMapping("/alumnos")
 	public ResponseEntity<?> readAll() {
 		HashMap<String,Object> response = new HashMap<>();
@@ -57,6 +56,8 @@ public class AlumnoRestController implements ControllerDoc {
 		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.OK);
 	}
 
+	@Override
+	@CrossOrigin(origins = "*")
 	@GetMapping("/alumnos/{id}")
 	public ResponseEntity<?> read(@PathVariable Long id) {
 		Alumno alumno = null;
@@ -79,6 +80,7 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@PostMapping("/alumnos")
 	public ResponseEntity<?> create(@RequestBody Alumno alumno) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -97,6 +99,7 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@PutMapping("/alumnos/{id}")
 	public ResponseEntity<?> update(@RequestBody Alumno alumno, @PathVariable Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -147,6 +150,7 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@DeleteMapping("/alumnos/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -169,6 +173,7 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@PostMapping("/alumnos/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -211,6 +216,7 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
+	@CrossOrigin(origins = "*")
 	@GetMapping("/images/{name:.+}")
 	public ResponseEntity<?> getImage(@PathVariable String name) {
 		HashMap<String,Object> response = new HashMap<>();
