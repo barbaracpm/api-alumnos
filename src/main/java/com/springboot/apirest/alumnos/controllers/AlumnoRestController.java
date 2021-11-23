@@ -93,12 +93,32 @@ public class AlumnoRestController implements ControllerDoc {
 		}
 
 		try {
-			alumnoUpdated.setNombre(alumno.getNombre());
-			alumnoUpdated.setApellido(alumno.getApellido());
-			alumnoUpdated.setEmail(alumno.getEmail());
-			alumnoUpdated.setTelefono(alumno.getTelefono());
-			alumnoUpdated.setDireccion(alumno.getDireccion());
-			alumnoUpdated.setCodigoPostal(alumno.getCodigoPostal());
+			if (alumno.getNombre() != null && !alumno.getNombre().isEmpty()) {
+				alumnoUpdated.setNombre(alumno.getNombre());
+			}
+			if (alumno.getApellido() != null && !alumno.getApellido().isEmpty()) {
+				alumnoUpdated.setApellido(alumno.getApellido());
+			}
+			if (alumno.getEmail() != null && !alumno.getEmail().isEmpty()) {
+				alumnoUpdated.setEmail(alumno.getEmail());
+			}
+			String telefono = Integer.toString(alumno.getTelefono());
+			if (telefono.length() == 9) {
+				alumnoUpdated.setTelefono(alumno.getTelefono());
+			} else {
+				response.put("mensaje", "Error al introducir el número de teléfono.");
+				return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+			}
+			if (alumno.getDireccion() != null && !alumno.getDireccion().isEmpty()) {
+				alumnoUpdated.setDireccion(alumno.getDireccion());
+			}
+			String codigoPostal = Integer.toString(alumno.getCodigoPostal());
+			if (codigoPostal.length() == 5) {
+				alumnoUpdated.setCodigoPostal(alumno.getCodigoPostal());
+			} else {
+				response.put("mensaje", "Error al introducir el código postal.");
+				return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+			}
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar el alumno en base de datos.");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
