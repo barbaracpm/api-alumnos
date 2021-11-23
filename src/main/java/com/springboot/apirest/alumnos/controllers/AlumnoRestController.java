@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.springboot.apirest.alumnos.models.entity.Alumno;
@@ -43,8 +47,21 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	public ResponseEntity<?> create(Alumno alumno) {
-		return null;
+	@PostMapping("/alumnos")
+	public ResponseEntity<?> create(@RequestBody Alumno alumno) {
+		HashMap<String,Object> response = new HashMap<>();
+
+		try {
+			alumnoService.save(alumno);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al insertar los datos en la base de datos.");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		response.put("mensaje", "Alumno creado con éxito.");
+		response.put("alumno", alumno);
+		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.CREATED);
 	}
 
 	@Override
@@ -53,8 +70,25 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	public ResponseEntity<?> delete(Long id) {
-		return null;
+	@DeleteMapping("/alumnos/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+		HashMap<String,Object> response = new HashMap<>();
+
+		if (alumnoService.findById(id) == null) {
+			response.put("mensaje", "El alumno ".concat(id.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			alumnoService.deleteById(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el alumno en la base de datos.");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		response.put("mensaje", "El alumno se ha eliminado con éxito.");
+		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.NO_CONTENT);
 	}
 
 }
