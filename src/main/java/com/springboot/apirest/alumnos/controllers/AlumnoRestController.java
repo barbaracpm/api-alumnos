@@ -39,7 +39,6 @@ public class AlumnoRestController implements ControllerDoc {
 	private AlumnoService alumnoService;
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@GetMapping("/alumnos")
 	public ResponseEntity<?> readAll() {
 		HashMap<String,Object> response = new HashMap<>();
@@ -57,7 +56,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@GetMapping("/alumnos/{id}")
 	public ResponseEntity<?> read(@PathVariable Long id) {
 		Alumno alumno = null;
@@ -80,7 +78,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@PostMapping("/alumnos")
 	public ResponseEntity<?> create(@RequestBody Alumno alumno) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -99,7 +96,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@PutMapping("/alumnos/{id}")
 	public ResponseEntity<?> update(@RequestBody Alumno alumno, @PathVariable Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -150,7 +146,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@DeleteMapping("/alumnos/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -173,7 +168,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@PostMapping("/alumnos/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
 		HashMap<String,Object> response = new HashMap<>();
@@ -216,7 +210,6 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	@CrossOrigin(origins = "*")
 	@GetMapping("/images/{name:.+}")
 	public ResponseEntity<?> getImage(@PathVariable String name) {
 		HashMap<String,Object> response = new HashMap<>();
