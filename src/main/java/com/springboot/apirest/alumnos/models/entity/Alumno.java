@@ -24,6 +24,9 @@ public class Alumno implements Serializable {
 	private String apellido;
 	
 	@Column(nullable = false, unique = true)
+	private String dni;
+	
+	@Column(nullable = false, unique = true)
 	private String email;
 	private int telefono;
 	private String direccion;
@@ -47,6 +50,12 @@ public class Alumno implements Serializable {
 	}
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	public String getDni() {
+		return dni;
+	}
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 	public String getEmail() {
 		return email;
