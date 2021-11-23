@@ -41,9 +41,25 @@ public class AlumnoRestController implements ControllerDoc {
 		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.OK);
 	}
 
-	@Override
-	public ResponseEntity<?> read(Long id) {
-		return null;
+	@GetMapping("/alumnos/{id}")
+	public ResponseEntity<?> read(@PathVariable Long id) {
+		Alumno alumno = null;
+		HashMap<String,Object> response = new HashMap<>();
+
+		try {
+			alumno = alumnoService.findById(id);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta en base de datos.");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		if(alumno == null) {
+			response.put("mensaje", "El alumno ".concat(id.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<Alumno>(alumno, HttpStatus.OK);
 	}
 
 	@Override
