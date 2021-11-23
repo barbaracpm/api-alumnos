@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.apirest.alumnos.models.entity.Alumno;
 
@@ -26,5 +27,9 @@ public interface ControllerDoc {
 	
 	@DeleteMapping("/alumnos/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id);
+
+	public ResponseEntity<?> upload(MultipartFile archivo, Long id);
+
+	public ResponseEntity<?> getImage(String name);
 	
 }
