@@ -1,6 +1,8 @@
 package com.springboot.apirest.alumnos.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,15 +31,16 @@ public class AlumnoRestController implements ControllerDoc {
 	@GetMapping("/alumnos")
 	public ResponseEntity<?> readAll() {
 		HashMap<String,Object> response = new HashMap<>();
-
+		List<Alumno> list = new LinkedList<>();
 		try {
-			alumnoService.findAll();
+			 list = alumnoService.findAll();
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en base de datos.");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-
+		
+		response.put("alumnos", list);
 		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.OK);
 	}
 
