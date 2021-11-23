@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,7 +22,7 @@ import com.springboot.apirest.alumnos.services.AlumnoService;
 @Entity
 @RequestMapping("/clase")
 public class AlumnoRestController implements ControllerDoc {
-	
+
 	@Autowired
 	private AlumnoService alumnoService;
 
@@ -29,7 +30,7 @@ public class AlumnoRestController implements ControllerDoc {
 	@GetMapping("/alumnos")
 	public ResponseEntity<?> readAll() {
 		HashMap<String,Object> response = new HashMap<>();
-		
+
 		try {
 			alumnoService.findAll();
 		} catch (DataAccessException e) {
@@ -37,7 +38,7 @@ public class AlumnoRestController implements ControllerDoc {
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.OK);
 	}
 
@@ -81,8 +82,33 @@ public class AlumnoRestController implements ControllerDoc {
 	}
 
 	@Override
-	public ResponseEntity<?> update(Alumno alumno, Long id) {
-		return null;
+	@PutMapping("/alumnos/{id}")
+	public ResponseEntity<?> update(@RequestBody Alumno alumno, @PathVariable Long id) {
+		HashMap<String,Object> response = new HashMap<>();
+		
+		Alumno alumnoUpdated = alumnoService.findById(id);
+		if (alumnoUpdated == null) {
+			response.put("mensaje", "El alumno ".concat(id.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.NOT_FOUND);
+		}
+
+		try {
+			alumnoUpdated.setNombre(alumno.getNombre());
+			alumnoUpdated.setApellido(alumno.getApellido());
+			alumnoUpdated.setEmail(alumno.getEmail());
+			alumnoUpdated.setTelefono(alumno.getTelefono());
+			alumnoUpdated.setDireccion(alumno.getDireccion());
+			alumnoUpdated.setCodigoPostal(alumno.getCodigoPostal());
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar el alumno en base de datos.");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		alumnoService.save(alumnoUpdated);
+
+		response.put("mensaje", "El alumno se ha actualizado con éxito.");
+		response.put("alumno", alumnoUpdated);
+		return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.OK);
 	}
 
 	@Override
