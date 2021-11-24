@@ -31,7 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.springboot.apirest.alumnos.models.entity.Alumno;
 import com.springboot.apirest.alumnos.services.AlumnoService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+@ApiOperation(value = "/", tags = "Controlador del servicio")
 public class AlumnoRestController implements ControllerDoc {
 
 	@Autowired
