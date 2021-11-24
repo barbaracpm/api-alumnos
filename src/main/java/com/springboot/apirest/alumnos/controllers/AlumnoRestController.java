@@ -18,7 +18,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,21 +116,25 @@ public class AlumnoRestController implements ControllerDoc {
 				alumnoUpdated.setEmail(alumno.getEmail());
 			}
 			String telefono = Integer.toString(alumno.getTelefono());
-			if (telefono.length() == 9) {
-				alumnoUpdated.setTelefono(alumno.getTelefono());
-			} else {
-				response.put("mensaje", "Error al introducir el número de teléfono.");
-				return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+			if (telefono != null && !telefono.isEmpty()) {
+				if (telefono.length() == 9) {
+					alumnoUpdated.setTelefono(alumno.getTelefono());
+				} else {
+					response.put("mensaje", "Error al introducir el número de teléfono.");
+					return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);	
+				}
 			}
 			if (alumno.getDireccion() != null && !alumno.getDireccion().isEmpty()) {
 				alumnoUpdated.setDireccion(alumno.getDireccion());
 			}
 			String codigoPostal = Integer.toString(alumno.getCodigoPostal());
-			if (codigoPostal.length() == 5) {
-				alumnoUpdated.setCodigoPostal(alumno.getCodigoPostal());
-			} else {
-				response.put("mensaje", "Error al introducir el código postal.");
-				return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+			if (codigoPostal != null && !codigoPostal.isEmpty()) {
+				if (codigoPostal.length() == 5) {
+					alumnoUpdated.setCodigoPostal(alumno.getCodigoPostal());
+				} else {
+					response.put("mensaje", "Error al introducir el código postal.");
+					return new ResponseEntity<HashMap<String,Object>>(response, HttpStatus.BAD_REQUEST);
+				}
 			}
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar el alumno en base de datos.");
