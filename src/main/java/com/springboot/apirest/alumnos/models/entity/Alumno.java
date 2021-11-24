@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "alumnos")
 public class Alumno implements Serializable {
@@ -17,20 +19,34 @@ public class Alumno implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(notes = "ID del alumno", name = "id")
 	private long id;
 	
 	@Column(nullable = false)
+	@ApiModelProperty(notes = "Nombre del alumno", name = "nombre", required = true, example = "Lore")
 	private String nombre;
+	
+	@ApiModelProperty(notes = "Apellido del alumno", name = "apellido", example = "Ipsum")
 	private String apellido;
 	
 	@Column(nullable = false, unique = true)
+	@ApiModelProperty(notes = "DNI del alumno", name = "dni", required = true, example = "850488194J")
 	private String dni;
 	
 	@Column(nullable = false, unique = true)
+	@ApiModelProperty(notes = "Correo electrónico del alumno", name = "email", required = true, example = "lore@ipsum.com")
 	private String email;
+	
+	@ApiModelProperty(notes = "Teléfono de contacto", name = "telefono", example = "666339922")
 	private int telefono;
+	
+	@ApiModelProperty(notes = "Dirección", name = "direccion", example = "Calle Capitán")
 	private String direccion;
+	
+	@ApiModelProperty(notes = "Código postal", name = "codigoPostal", example = "28300")
 	private int codigoPostal;
+	
+	@ApiModelProperty(notes = "Foto de perfil del alumno", name = "imagen")
 	private String imagen;
 	
 	public long getId() {
